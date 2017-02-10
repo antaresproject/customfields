@@ -1,0 +1,13 @@
+{
+    "name": "components/customfields",
+    "description": "Antares Customfields Component",
+    "authors": [
+        {
+            "name": "Łukasz Cirut",
+            "email": "contact@antaresproject.io"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    }
+}
