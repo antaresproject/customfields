@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Http\Handlers;
 
 use Antares\Foundation\Http\Composers\LeftPane as SupportLeftPane;
@@ -60,15 +58,29 @@ class LeftPane extends SupportLeftPane
     public function compose($name = null, $options = array())
     {
         if (!self::$menuInstance) {
-            $fields   = FieldView::query()->get(['id', 'category_name'])->groupBy('category_name');
-            $category = from_route('category');
-            $menu     = app('antares.widget')->make('menu.customfields.pane');
 
+            $id       = from_route('customfields');
+            $category = from_route('category');
+            $fields   = FieldView::query()->get(['id', 'category_name'])->groupBy('category_name');
+            $menu     = app('antares.widget')->make('menu.customfields.pane');
             foreach ($fields as $name => $items) {
+                $active = false;
+                if (!is_null($id)) {
+                    foreach ($items as $item) {
+                        if ($item->id != $id) {
+                            continue;
+                        }
+                        $active = true;
+                        break;
+                    }
+                } else {
+                    $active = $category == $name;
+                }
+
                 $menu->add($name)
                         ->link(handles('antares::customfields/' . $name . '/index'))
                         ->title(ucfirst($name) . ' (' . $items->count() . ')')
-                        ->active($category == $name);
+                        ->active($active);
             }
             self::$menuInstance = $menu;
             $app                = Container::getInstance();
