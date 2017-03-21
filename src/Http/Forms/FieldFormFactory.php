@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Http\Forms;
 
 use Antares\Contracts\Html\Form\Grid as FormGrid;
@@ -122,7 +120,7 @@ class FieldFormFactory extends FormFactory
                     $attributes = ['id' => "{$validator->validator->name}Validator"];
                     if ($validator->validator->name == 'custom' && isset($prepared['activeValidators'][$validator->validator->id])) {
                         $attributes['disabled'] = 'disabled';
-                        $label                  = "antares/customfields::validator." . $prepared['activeValidators'][$validator->validator->id];
+                        $label                  = "antares/customfields::validator." . array_get($prepared, 'activeValidators.' . $validator->validator->id, 'default_custom_validator_label');
                     }
                     $shouldBeChecked = array_key_exists($validator->validator->id, $prepared['activeValidators']);
                     if (!$shouldBeChecked and $validator->validator->name == 'custom') {
@@ -148,7 +146,7 @@ class FieldFormFactory extends FormFactory
                         $customValidator = $fieldset
                                 ->control('input:text', "validator_custom[{$validator->validator->id}]")
                                 ->attributes(['class' => 'w470'])
-                                ->label('Value');
+                                ->label(trans('antares/customfields::label.custom_validator_value'));
                         if (isset($prepared['activeValidators'][$validator->validator->id]) && !empty($prepared['activeValidators'][$validator->validator->id])) {
                             $customValidator->value($prepared['activeValidators'][$validator->validator->id]);
                         } else {

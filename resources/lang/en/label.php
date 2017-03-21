@@ -17,9 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
-
 return
 
         [
@@ -42,5 +39,6 @@ return
             'value'                   => 'Value',
             'force_display_on_form'   => 'Force display field on form',
             'field_attributes'        => 'Field additional attributes',
-            'field_attributes_help'   => '*Use key:value format (eg.: class:foo). Attributes should be separated by comma.'
+            'field_attributes_help'   => '*Use key:value format (eg.: class:foo). Attributes should be separated by comma.',
+            'custom_validator_value'  => 'Custom validator'
 ];
