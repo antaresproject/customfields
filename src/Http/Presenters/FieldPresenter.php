@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Http\Presenters;
 
 use Antares\Contracts\Html\Form\Factory as FormFactory;
@@ -111,7 +109,7 @@ class FieldPresenter extends Presenter
         }
 
         $groupId         = $route->getParameter('group');
-        $categoryOptions = $categoryModel::lists('name', 'id');
+        $categoryOptions = $categoryModel::pluck('name', 'id');
 
         return [
             'groupId'             => $groupId,
@@ -119,7 +117,7 @@ class FieldPresenter extends Presenter
             'categoryId'          => $default->id,
             'typeOptions'         => $typeOptions,
             'categoryOptions'     => $categoryOptions,
-            'groupOptions'        => $default->group->lists('name', 'id'),
+            'groupOptions'        => $default->group->pluck('name', 'id'),
             'availableValidators' => $defaultField->validators,
             'activeValidators'    => $model->getFlattenValidators(),
             'multi'               => $defaultField->multi,

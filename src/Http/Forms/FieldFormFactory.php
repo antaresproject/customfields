@@ -89,12 +89,12 @@ class FieldFormFactory extends FormFactory
             $fieldset->control('select', 'fieldset[]')
                             ->label(trans('antares/customfields::label.assigned_fieldset'))
                             ->options(function() {
-                                return \Antares\Customfields\Model\Fieldsets::lists('name', 'name');
+                                return \Antares\Customfields\Model\Fieldsets::pluck('name', 'name');
                             })
                             ->wrapper(['class' => 'w500'])
                             ->attributes(['multiple' => 'multiple', 'data-selectar' => false, 'id' => 'fieldset'])
                             ->value(function($row) {
-                                return $row->fieldsets->lists('name')->toArray();
+                                return $row->fieldsets->pluck('name')->toArray();
                             })->help = trans('* Name of groups where field is assigned to. Start typing to create new fieldset.');
         });
     }
