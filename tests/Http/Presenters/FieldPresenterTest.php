@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Mockery as m;
@@ -107,7 +105,7 @@ class FieldPresenterTest extends TestCase
                 ->with(m::type('String'))
                 ->andReturn(array());
         $route    = m::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getParameter')->withAnyArgs()->andReturn(true);
+        $route->shouldReceive('parameter')->withAnyArgs()->andReturn(true);
         $this->assertTrue($stub->form($eloquent, 'fooAction', $route));
     }
 
