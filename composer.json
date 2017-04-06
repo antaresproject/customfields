@@ -1,6 +1,6 @@
 {
     "name": "antaresproject/component-customfields",
-    "description": "Antares Customfields Component",
+    "description": "Customfields Manager Antares",
     "type": "antaresproject-component",
     "version": "0.9.2.1",
     "authors": [
@@ -9,6 +9,9 @@
             "email": "contact@antaresproject.io"
         }
     ],
+    "extra": {
+        "class": "Antares\\Extension\\Composer\\ComponentPlugin"
+    },
     "require": {
         "php": "^7.0"
     },
