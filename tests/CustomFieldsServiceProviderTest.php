@@ -18,38 +18,26 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
+use Antares\Testing\TestCase;
 use Mockery as m;
 use Illuminate\Container\Container;
 use Antares\Customfields\CustomFieldsServiceProvider;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class CustomFieldsServiceProviderTest extends \PHPUnit_Framework_TestCase
+class CustomFieldsServiceProviderTest extends TestCase
 {
 
-    /**
-     * Application instance.
-     *
-     * @var \Illuminate\Container\Container
-     */
-    protected $app;
+    use WithoutMiddleware;
 
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
-        $this->app = new Container();
-    }
-
-    /**
-     * Teardown the test environment.
-     */
-    public function tearDown()
-    {
-        m::close();
+        parent::setUp();
+        $this->disableMiddlewareForAllTests();
     }
 
     /**
@@ -60,9 +48,10 @@ class CustomFieldsServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
 
         $app           = $this->app;
-        $app['config'] = m::mock('\Illuminate\Contracts\Config\Repository');
+        $app['config'] = $config        = m::mock('\Illuminate\Contracts\Config\Repository');
         $app['events'] = m::mock('\Illuminate\Contracts\Events\Dispatcher');
         $app['files']  = m::mock('\Illuminate\Filesystem\Filesystem');
+        $config->shouldReceive('get')->andReturn([]);
 
 
         $stub = new CustomFieldsServiceProvider($app);
@@ -85,15 +74,7 @@ class CustomFieldsServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app  = new Container();
         $stub = new CustomFieldsServiceProvider($app);
-        $this->assertEquals([
-            'antares.customfields.model',
-            'antares.customfields.model.view',
-            'antares.customfields.model.category',
-            'antares.customfields.model.group',
-            'antares.customfields.model.type',
-            'antares.customfields.model.type.option',
-            'antares.customfields.model.validator',
-            'antares.customfields.model.validator.config'], $stub->provides());
+        $this->assertEquals([], $stub->provides());
     }
 
     /**
@@ -112,33 +93,35 @@ class CustomFieldsServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionThrowsWhenBoot()
     {
-        $path = realpath(__DIR__ . '/../../../vendor/antares/components/customfields');
+        $app        = m::mock(\Illuminate\Contracts\Foundation\Application::class);
+        $app->shouldReceive('make')->with(\Illuminate\Routing\Router::class)->andReturn($router     = m::mock(\Illuminate\Routing\Router::class));
+        $app->shouldReceive('make')->with(\Illuminate\Contracts\Events\Dispatcher::class)->andReturn($dispatcher = m::mock(\Illuminate\Contracts\Events\Dispatcher::class))
+                ->shouldReceive('make')->with(\Illuminate\Contracts\Http\Kernel::class)->andReturn($kernel     = m::mock(\Illuminate\Contracts\Http\Kernel::class))
+                ->shouldReceive('make')->with('config')->andReturn($config     = m::mock(\Illuminate\Contracts\Config\Repository::class))
+                ->shouldReceive('make')->with('files')->andReturn($files      = m::mock(\Illuminate\Contracts\Filesystem\Filesystem::class))
+                ->shouldReceive('make')->with('translator')->andReturn($translator = m::mock(\Antares\Translations\Translator::class))
+                ->shouldReceive('make')->with('view')->andReturn($view       = m::mock(\Illuminate\Contracts\View\View::class))
+                ->shouldReceive('make')->with('antares.acl')->andReturnSelf()
+                ->shouldReceive('make')->with('antares/customfields')->andReturnSelf()
+                ->shouldReceive('make')->with('antares.platform.memory')->andReturnSelf()
+                ->shouldReceive('make')->with('antares.request')->andReturn($request    = m::mock(\Illuminate\Http\Request::class))
+                ->shouldReceive('attach')->with(m::type('Object'))->andReturnSelf()
+                ->shouldReceive('routesAreCached')->withNoArgs()->andReturn(true);
 
-        $app = [
-            'router'                     => $router                      = m::mock('\Illuminate\Routing\Router'),
-            'antares.customfields.model' => m::mock('Antares\Customfields\Model\Field'),
-            'view.paths'                 => [$path]
-        ];
+        $request->shouldReceive('shouldMakeApiResponse')->andReturn(false);
+        $translator->shouldReceive('addNamespace')->with(m::type('String'), m::type('String'))->andReturnSelf();
+        $dispatcher->shouldReceive('listen')->with(m::type('String'), m::type('String'))->andReturnSelf();
 
-        $config = m::mock('\Antares\Config\Repository');
-        $config->shouldReceive('package')
-                ->once()
-                ->with('antares/customfields', $path . "/resources/config", 'antares/customfields')
-                ->andReturnNull();
+        $view->shouldReceive('addNamespace')->with(m::type('String'), m::type('String'))->andReturnSelf()
+                ->shouldReceive('composer')->with(m::type('array'), m::type('String'))->andReturnSelf();
+        $router->shouldReceive('aliasMiddleware')->with(m::type('String'), m::type('String'));
 
 
-        $config->shouldReceive('offsetGet')
-                ->once()
-                ->andReturnUsing(function ($c) {
-                    array(realpath(__DIR__ . '/../'));
-                });
-        $app['config'] = $config;
-        $stub          = new CustomFieldsServiceProvider($app);
-        try {
-            $stub->boot();
-        } catch (\Exception $ex) {
-            $this->assertSame("array_map(): Argument #2 should be an array", $ex->getMessage());
-        }
+        $this->app['antares.customfields.model.category'] = $fieldCategory                                    = $this->app->make(\Antares\Customfields\Model\FieldCategory::class);
+
+        $config->shouldReceive('get')->andReturn([]);
+        $stub = new CustomFieldsServiceProvider($app);
+        $this->assertNull($stub->boot());
     }
 
 }

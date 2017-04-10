@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Model\FieldGroup;
@@ -63,7 +61,7 @@ class FieldGroupTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'FieldGroup');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\FieldGroup');
     }
 
     /**

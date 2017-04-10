@@ -18,15 +18,13 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Events\FormHandler;
+use Antares\Testing\ApplicationTestCase;
 use Mockery as m;
-use Antares\Testing\TestCase;
 
-class FormHandlerTest extends TestCase
+class FormHandlerTest extends ApplicationTestCase
 {
 
     /**
@@ -38,7 +36,8 @@ class FormHandlerTest extends TestCase
         $mock                                         = m::mock('\Antares\Customfields\Model\FieldView');
         $mock->shouldReceive('query')->andReturnSelf()
                 ->shouldReceive('where')->withAnyArgs()->andReturnSelf()
-                ->shouldReceive('get')->withNoArgs()->andReturnSelf();
+                ->shouldReceive('get')->withNoArgs()->andReturnSelf()
+                ->shouldReceive('select')->with(m::type('array'))->andReturnSelf();
         $this->app['antares.customfields.model.view'] = $mock;
     }
 
@@ -66,6 +65,7 @@ class FormHandlerTest extends TestCase
      */
     public function testOnViewform()
     {
+
         $request     = m::mock('\Illuminate\Http\Request');
         $fieldData   = m::mock('\Antares\Customfields\Model\FieldData');
         $request->shouldReceive('old')->withAnyArgs()->andReturn([

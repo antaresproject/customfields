@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Events\ValidatorHandler;
@@ -62,7 +60,8 @@ class ValidatorHandlerTest extends TestCase
         $collection                                   = new \Illuminate\Support\Collection([]);
         $fieldView->shouldReceive('query')->withNoArgs()->andReturnSelf()
                 ->shouldReceive('where')->withAnyArgs()->andReturnSelf()
-                ->shouldReceive('get')->withAnyArgs()->andReturn($collection);
+                ->shouldReceive('get')->withAnyArgs()->andReturn($collection)
+                ->shouldReceive('isEmpty')->withAnyArgs()->andReturn(true);
 
         $this->assertNull($stub->onSubmitForm($rules, $attributes));
         $this->assertEmpty($rules->getAttributes());
