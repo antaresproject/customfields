@@ -18,15 +18,13 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
-use Antares\Testing\TestCase;
-use Antares\Customfields\Http\Processors\FieldProcessor;
+use Antares\Customfields\Processor\FieldProcessor;
+use Antares\Testing\ApplicationTestCase;
 use Mockery as m;
 
-class FieldProcessorTest extends TestCase
+class FieldProcessorTest extends ApplicationTestCase
 {
 
     /**
@@ -39,14 +37,13 @@ class FieldProcessorTest extends TestCase
         $fieldView->shouldReceive('query')->withNoArgs()->andReturnSelf()
                 ->shouldReceive('where')->withAnyArgs()->andReturnSelf()
                 ->shouldReceive('exists')->withNoArgs()->andReturn(false);
-    }
+        $this->addProvider(\Antares\Brands\BrandsServiceProvider::class);
 
-    /**
-     * @see parent::tearDown();
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
+        $this->app['antares.brand'] = $brands                     = m::mock(\Antares\Brands\Model\Brands::class);
+        $brands->shouldReceive('all')->withNoArgs()->andReturn(new \Illuminate\Support\Collection());
+
+        $this->app['customfields'] = $customfields              = m::mock(\Antares\Customfields::class);
+        $customfields->shouldReceive('get')->withNoArgs()->andReturn(new \Illuminate\Support\Collection());
     }
 
     /**
@@ -58,7 +55,7 @@ class FieldProcessorTest extends TestCase
         $validator = m::mock('\Antares\Customfields\Http\Validators\FieldValidator');
 
         $stub = new FieldProcessor($presenter, $validator);
-        $this->assertSame(get_class($stub), 'Antares\Customfields\Http\Processors\FieldProcessor');
+        $this->assertSame(get_class($stub), 'Antares\Customfields\Processor\FieldProcessor');
     }
 
     /**
@@ -67,7 +64,7 @@ class FieldProcessorTest extends TestCase
     public function testShowWithoutAjax()
     {
         $presenter = m::mock('\Antares\Customfields\Http\Presenters\FieldPresenter');
-        $presenter->shouldReceive('table')->with(m::type('\yajra\Datatables\Html\Builder'))->andReturn(1);
+        $presenter->shouldReceive('table')->withNoArgs()->andReturn(view());
 
         $validator = m::mock('\Antares\Customfields\Http\Validators\FieldValidator');
 
@@ -75,7 +72,8 @@ class FieldProcessorTest extends TestCase
         $request->shouldReceive('ajax')->withNoArgs()->andReturn(false);
         $builder = m::mock('\yajra\Datatables\Html\Builder');
         $stub    = new FieldProcessor($presenter, $validator);
-        $this->assertEquals($stub->show($request, $builder), 1);
+
+        $this->assertInstanceOf(\Illuminate\Contracts\View\Factory::class, $stub->show($request, $builder));
     }
 
     /**
@@ -84,13 +82,13 @@ class FieldProcessorTest extends TestCase
     public function testShowWithAjax()
     {
         $presenter = m::mock('\Antares\Customfields\Http\Presenters\FieldPresenter');
-        $presenter->shouldReceive('tableJson')->with(m::type('\Illuminate\Database\Eloquent\Model'))->andReturn(1);
+        $presenter->shouldReceive('table')->withNoArgs()->andReturn(new \Illuminate\Http\JsonResponse());
         $validator = m::mock('\Antares\Customfields\Http\Validators\FieldValidator');
         $request   = m::mock('\Illuminate\Http\Request');
         $request->shouldReceive('ajax')->withNoArgs()->andReturn(true);
         $builder   = m::mock('\yajra\Datatables\Html\Builder');
         $stub      = new FieldProcessor($presenter, $validator);
-        $this->assertEquals($stub->show($request, $builder), 1);
+        $this->assertInstanceOf(\Illuminate\Http\JsonResponse::class, $stub->show($request, $builder));
     }
 
 }

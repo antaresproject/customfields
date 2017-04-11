@@ -20,11 +20,11 @@
 
 namespace Antares\Customfields\TestCase;
 
-use Antares\Testing\TestCase;
-use Mockery as m;
-use Illuminate\Container\Container;
 use Antares\Customfields\CustomFieldsServiceProvider;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Container\Container;
+use Antares\Testing\TestCase;
+use Mockery as m;
 
 class CustomFieldsServiceProviderTest extends TestCase
 {
