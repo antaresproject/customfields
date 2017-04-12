@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Http\Presenters;
 
 use Antares\Contracts\Html\Form\Factory as FormFactory;
@@ -81,7 +79,7 @@ class FieldPresenter extends Presenter
          * prepare data
          */
         $categoryModel = Foundation::make('antares.customfields.model.category');
-        $categoryId    = $route->getParameter('category');
+        $categoryId    = $route->parameter('category');
         if (!is_null($categoryId)) {
             $default = $categoryModel->query()->findOrFail($categoryId);
         } elseif ($model->exists) {
@@ -100,7 +98,7 @@ class FieldPresenter extends Presenter
             }
             return $options;
         };
-        $typeId = $route->getParameter('type');
+        $typeId = $route->parameter('type');
         if (!is_null($typeId)) {
             $defaultField = $type->query()->findOrFail($typeId);
         } elseif ($model->exists) {
@@ -110,8 +108,8 @@ class FieldPresenter extends Presenter
             $defaultField = $type::getDefault();
         }
 
-        $groupId         = $route->getParameter('group');
-        $categoryOptions = $categoryModel::lists('name', 'id');
+        $groupId         = $route->parameter('group');
+        $categoryOptions = $categoryModel::pluck('name', 'id');
 
         return [
             'groupId'             => $groupId,
@@ -119,7 +117,7 @@ class FieldPresenter extends Presenter
             'categoryId'          => $default->id,
             'typeOptions'         => $typeOptions,
             'categoryOptions'     => $categoryOptions,
-            'groupOptions'        => $default->group->lists('name', 'id'),
+            'groupOptions'        => $default->group->pluck('name', 'id'),
             'availableValidators' => $defaultField->validators,
             'activeValidators'    => $model->getFlattenValidators(),
             'multi'               => $defaultField->multi,

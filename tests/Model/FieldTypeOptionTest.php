@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Model\FieldTypeOption;
@@ -63,7 +61,7 @@ class FieldTypeOptionTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'FieldTypeOption');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\FieldTypeOption');
     }
 
     /**

@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Events;
 
 use Antares\Support\Facades\Foundation;

@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Model\FieldTypeValidator;
@@ -63,7 +61,7 @@ class FieldTypeValidatorTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'FieldTypeValidator');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\FieldTypeValidator');
     }
 
     /**

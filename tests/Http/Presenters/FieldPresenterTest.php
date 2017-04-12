@@ -18,33 +18,14 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
-use Mockery as m;
-use Antares\Testing\TestCase;
-use Antares\Customfields\Model\Field;
 use Antares\Customfields\Http\Presenters\FieldPresenter;
+use Antares\Testing\ApplicationTestCase;
+use Mockery as m;
 
-class FieldPresenterTest extends TestCase
+class FieldPresenterTest extends ApplicationTestCase
 {
-
-    /**
-     * @see parent::setup
-     */
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * @see parent::tearDown()
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
 
     /**
      * test constructing
@@ -52,8 +33,10 @@ class FieldPresenterTest extends TestCase
     public function testConstruct()
     {
 
-        $mock = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
-        $stub = new FieldPresenter($mock);
+        $mock       = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
+        $breadcrumb = $this->app->make(\Antares\Customfields\Http\Breadcrumb\Breadcrumb::class);
+        $datatable  = $this->app->make(\Antares\Customfields\Http\Datatables\Customfields::class);
+        $stub       = new FieldPresenter($mock, $breadcrumb, $datatable);
         $this->assertSame(get_class($stub), 'Antares\Customfields\Http\Presenters\FieldPresenter');
     }
 
@@ -62,43 +45,47 @@ class FieldPresenterTest extends TestCase
      */
     public function testTable()
     {
-        $mock    = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
-        $builder = m::mock('\yajra\Datatables\Html\Builder');
-        $builder->shouldReceive('addColumn')->with(m::type('Array'))->andReturnSelf();
-        $builder->shouldReceive('addAction')->with(m::type('Array'))->andReturnSelf();
+        $mock       = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
+        $builder    = $this->app->make(\Antares\Customfields\Http\Forms\FieldFormFactory::class);
+        $breadcrumb = $this->app->make(\Antares\Customfields\Http\Breadcrumb\Breadcrumb::class);
+        $datatable  = $this->app->make(\Antares\Customfields\Http\Datatables\Customfields::class);
+        $fieldView  = m::mock('\Antares\Customfields\Model\FieldView');
+        $fieldView->shouldReceive('query')->withNoArgs()->andReturnSelf()
+                ->shouldReceive('where')->withAnyArgs()->andReturnSelf()
+                ->shouldReceive('get')->withAnyArgs()->andReturn(new \Illuminate\Support\Collection)
+                ->shouldReceive('isEmpty')->withAnyArgs()->andReturn(true);
 
-        $stub = new FieldPresenter($mock);
+        $this->app['antares.customfields.model.view'] = $fieldView;
+
+        $this->app['view']->addNamespace('antares/customfields', realpath(base_path() . '../../../../components/customfields/resources/views'));
+        $stub = new FieldPresenter($mock, $breadcrumb, $datatable);
         $this->assertInstanceOf(\Illuminate\View\View::class, $stub->table($builder));
     }
 
     /**
-     * test tableJson method
-     */
-    public function testTableJson()
-    {
-        $mock = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
-
-        $stub  = new FieldPresenter($mock);
-        $model = m::mock('\Illuminate\Database\Eloquent\Model');
-
-        $customField = new Field();
-        $model->shouldReceive('select')->with(m::type('Array'))->andReturn($customField->query()->getQuery());
-        $this->assertInstanceOf(\Illuminate\Http\JsonResponse::class, $stub->tableJson($model));
-    }
-
-    /**
      * testing form method
+     * 
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function testForm()
     {
-        $mock     = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
+        $mock       = m::mock('\Antares\Customfields\Http\Forms\FieldFormFactory');
         $mock->shouldReceive('of')
                 ->with(m::type('String'), m::type('Closure'))
                 ->andReturn(true)
                 ->shouldReceive('build')
                 ->andReturn(true);
-        $stub     = new FieldPresenter($mock);
-        $eloquent = m::mock('\Antares\Model\Eloquent');
+        $breadcrumb = m::mock(\Antares\Customfields\Http\Breadcrumb\Breadcrumb::class);
+        $breadcrumb->shouldReceive('onCustomFieldCreateOrEdit')->with(m::type('Object'))->andReturnSelf();
+
+
+        $this->app['antares.customfields.model.category'] = $fieldCategory                                    = m::mock(\Antares\Customfields\Model\FieldCategory::class);
+        $fieldCategory->shouldReceive('query')->andReturnSelf();
+        $fieldCategory->shouldReceive('findOrFail')->andThrow(\Illuminate\Database\Eloquent\ModelNotFoundException::class, 302);
+
+        $datatable = $this->app->make(\Antares\Customfields\Http\Datatables\Customfields::class);
+        $stub      = new FieldPresenter($mock, $breadcrumb, $datatable);
+        $eloquent  = m::mock('\Antares\Model\Eloquent');
         $eloquent->shouldReceive('getFlattenValidators')
                 ->once()
                 ->andReturn(array())
@@ -106,8 +93,8 @@ class FieldPresenterTest extends TestCase
                 ->once()
                 ->with(m::type('String'))
                 ->andReturn(array());
-        $route    = m::mock('\Illuminate\Routing\Route');
-        $route->shouldReceive('getParameter')->withAnyArgs()->andReturn(true);
+        $route     = m::mock('\Illuminate\Routing\Route');
+        $route->shouldReceive('parameter')->withAnyArgs()->andReturn(true);
         $this->assertTrue($stub->form($eloquent, 'fooAction', $route));
     }
 

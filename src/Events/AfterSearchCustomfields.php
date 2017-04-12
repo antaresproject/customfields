@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Events;
 
 use Antares\Customfields\Model\FieldView;
@@ -52,7 +50,7 @@ class AfterSearchCustomfields
                 if (empty($group)) {
                     continue;
                 }
-                $first = $group->first(function ($key, $value) use($field) {
+                $first = $group->first(function ($value, $key) use($field) {
                     return $value->name === $field->getName();
                 });
 

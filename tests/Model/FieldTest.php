@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Model\Field;
@@ -63,7 +61,7 @@ class FieldTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'Field');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\Field');
     }
 
     /**
@@ -79,7 +77,7 @@ class FieldTest extends TestCase
      */
     public function testFillable()
     {
-        $this->assertSame($this->stub->fillable, ['brand_id', 'group_id', 'type_id', 'name', 'label', 'description']);
+        $this->assertSame($this->stub->fillable, ['brand_id', 'group_id', 'type_id', 'name', 'label', 'placeholder', 'value', 'description', 'imported', 'force_display', 'additional_attributes']);
     }
 
     /**

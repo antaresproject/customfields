@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Model\FieldCategory;
@@ -63,7 +61,7 @@ class FieldCategoryTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'FieldCategory');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\FieldCategory');
     }
 
     /**

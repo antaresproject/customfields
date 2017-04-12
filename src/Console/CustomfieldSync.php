@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Console;
 
 use Antares\Customfields\Model\FieldValidatorConfig;
@@ -236,7 +234,7 @@ class CustomfieldSync extends Command
             foreach ($customfields as $model => $customfield) {
                 $fields = !is_array($customfield) ? [$customfield] : $customfield;
                 $group  = $this->getGroup($model);
-                $this->saveFields($group, array_where($fields, function($index, $field) {
+                $this->saveFields($group, array_where($fields, function($field, $index) {
                             return $field->configurable();
                         }));
             }

@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Model\FieldView;
@@ -63,7 +61,7 @@ class FieldViewTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'FieldView');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\FieldView');
     }
 
 }
