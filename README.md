@@ -1,4 +1,4 @@
-# Antares Project Custom Fields Component
+# Antares Custom Fields Component
 
 [![Laravel 5.4](https://img.shields.io/badge/Laravel-5.4-orange.svg)](http://laravel.com)
 [![Coverage Status](https://coveralls.io/repos/github/antaresproject/project/badge.svg?branch=master)](https://coveralls.io/github/antaresproject/project?branch=master)
@@ -11,16 +11,16 @@
 
 ## Documentation
 
-Antares Project Custom Fields Component documentation [antaresproject.io/docs/core_modules/customfields](http://antaresproject.io/docs/site/core_modules/customfields/).
+Antares Custom Fields Component documentation [antaresproject.io/docs/core_modules/customfields](http://antaresproject.io/docs/site/core_modules/customfields/).
 
-Full Antares Project documentation can be found at [antaresproject.io/docs](http://antaresproject.io/docs).
+Full Antares documentation can be found at [antaresproject.io/docs](http://antaresproject.io/docs).
 
 
 ## Changelog
 
-Antares Project Custom Fields changelog can be found in release notes [antaresproject.io/docs/site/getting_started/changelog/#customfields](http://antaresproject.io/docs/site/getting_started/changelog/index.html#customfields).
+Antares Custom Fields changelog can be found in release notes [antaresproject.io/docs/site/getting_started/changelog/#customfields](http://antaresproject.io/docs/site/getting_started/changelog/index.html#customfields).
 
-You can find full Antares Project changelog in Antares Project Documentation [antaresproject.io/docs/site/getting_started/changelog](http://antaresproject.io/docs/site/getting_started/changelog/index.html).
+You can find full Antares changelog in Antares Documentation [antaresproject.io/docs/site/getting_started/changelog](http://antaresproject.io/docs/site/getting_started/changelog/index.html).
 
 ## Issues
 
