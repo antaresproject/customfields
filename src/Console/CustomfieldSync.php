@@ -228,7 +228,6 @@ class CustomfieldSync extends Command
     public function handle()
     {
         $customfields = app('customfields')->get();
-
         DB::beginTransaction();
         try {
             foreach ($customfields as $model => $customfield) {

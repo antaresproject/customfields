@@ -126,7 +126,6 @@ class CustomFieldsServiceProvider extends ModuleServiceProvider
         $this->bootMemory();
         $this->bootFormEvents();
         $this->bootMenu();
-        //$this->app['antares.customfields.installed'] = true;
     }
 
     /**

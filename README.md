@@ -1,4 +1,4 @@
-# Antares Custom Fields Component
+# Antares Custom Fields Module
 
 [![Laravel 5.4](https://img.shields.io/badge/Laravel-5.4-orange.svg)](http://laravel.com)
 [![Coverage Status](https://coveralls.io/repos/github/antaresproject/project/badge.svg?branch=master)](https://coveralls.io/github/antaresproject/project?branch=master)
@@ -9,9 +9,12 @@
 [![GitHub stars](https://img.shields.io/github/stars/antaresproject/project.svg)](https://github.com/antaresproject/project/stargazers)
 [![GitHub license](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://raw.githubusercontent.com/antaresproject/project/master/LICENSE)
 
+![customfields](docs/img/customfields.PNG)
+
+
 ## Documentation
 
-Antares Custom Fields Component documentation [antaresproject.io/docs/core_modules/customfields](http://antaresproject.io/docs/site/core_modules/customfields/).
+Antares Custom Fields Module documentation [antaresproject.io/docs/core_modules/customfields](http://antaresproject.io/docs/site/core_modules/customfields/).
 
 Full Antares documentation can be found at [antaresproject.io/docs](http://antaresproject.io/docs).
 
