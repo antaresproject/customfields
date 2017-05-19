@@ -238,8 +238,6 @@ class CustomfieldSync extends Command
                         }));
             }
         } catch (Exception $ex) {
-            vdump($ex);
-            exit;
             DB::rollback();
         }
         DB::commit();
