@@ -1,6 +1,6 @@
 {
     "name": "antaresproject/component-customfields",
-    "description": "Customfields Manager Antares",
+    "description": "Custom fields module provides possibility to create system custom fields to extend default entity attributes.",
     "type": "antaresproject-component",
     "homepage": "https://github.com/antaresproject/customfields",
     "version": "0.9.2.1",
