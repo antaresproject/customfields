@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,9 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\Console;
 
@@ -230,19 +228,16 @@ class CustomfieldSync extends Command
     public function handle()
     {
         $customfields = app('customfields')->get();
-
         DB::beginTransaction();
         try {
             foreach ($customfields as $model => $customfield) {
                 $fields = !is_array($customfield) ? [$customfield] : $customfield;
                 $group  = $this->getGroup($model);
-                $this->saveFields($group, array_where($fields, function($index, $field) {
+                $this->saveFields($group, array_where($fields, function($field, $index) {
                             return $field->configurable();
                         }));
             }
         } catch (Exception $ex) {
-            vdump($ex);
-            exit;
             DB::rollback();
         }
         DB::commit();

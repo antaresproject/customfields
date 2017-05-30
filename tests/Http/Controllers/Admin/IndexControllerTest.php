@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,55 +14,54 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\TestCase;
 
 use Antares\Customfields\Http\Controllers\Admin\IndexController;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Antares\Testing\ApplicationTestCase;
 use Mockery as m;
-use Antares\Testbench\TestCase;
 
-class IndexControllerTest extends TestCase
+class IndexControllerTest extends ApplicationTestCase
 {
 
+    use WithoutMiddleware;
+
     /**
-     * setup
+     * Setup the test environment.
      */
     public function setUp()
     {
+        $this->addProvider(AutomationServiceProvider::class);
         parent::setUp();
+        $this->disableMiddlewareForAllTests();
     }
 
     /**
-     * tearing down
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
-    /**
-     * test creating instance of class
+     * Test creating instance of class
+     * 
+     * @test
      */
     public function testConstructWithProcessor()
     {
-        $mock = m::mock('\Antares\Customfields\Http\Processors\FieldProcessor');
-        $stub = new IndexController($mock);
+        $processor = $this->app->make(\Antares\Customfields\Processor\FieldProcessor::class);
+        $stub      = new IndexController($processor);
         $this->assertSame(get_class($stub), 'Antares\Customfields\Http\Controllers\Admin\IndexController');
     }
 
     /**
-     * test setup filters
+     * Test setup middleware
+     * 
+     * @test
      */
-    public function testSetupFilters()
+    public function testSetupMiddleware()
     {
-        $mock = m::mock('\Antares\Customfields\Http\Processors\FieldProcessor');
-        $stub = new IndexController($mock);
-        $this->assertnull($stub->setupFilters());
+        $processor = $this->app->make(\Antares\Customfields\Processor\FieldProcessor::class);
+        $stub      = new IndexController($processor);
+        $this->assertnull($stub->setupMiddleware());
     }
 
 }

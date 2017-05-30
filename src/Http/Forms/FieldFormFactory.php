@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,9 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\Http\Forms;
 
@@ -91,12 +89,12 @@ class FieldFormFactory extends FormFactory
             $fieldset->control('select', 'fieldset[]')
                             ->label(trans('antares/customfields::label.assigned_fieldset'))
                             ->options(function() {
-                                return \Antares\Customfields\Model\Fieldsets::lists('name', 'name');
+                                return \Antares\Customfields\Model\Fieldsets::pluck('name', 'name');
                             })
                             ->wrapper(['class' => 'w500'])
                             ->attributes(['multiple' => 'multiple', 'data-selectar' => false, 'id' => 'fieldset'])
                             ->value(function($row) {
-                                return $row->fieldsets->lists('name')->toArray();
+                                return $row->fieldsets->pluck('name')->toArray();
                             })->help = trans('* Name of groups where field is assigned to. Start typing to create new fieldset.');
         });
     }
@@ -122,7 +120,7 @@ class FieldFormFactory extends FormFactory
                     $attributes = ['id' => "{$validator->validator->name}Validator"];
                     if ($validator->validator->name == 'custom' && isset($prepared['activeValidators'][$validator->validator->id])) {
                         $attributes['disabled'] = 'disabled';
-                        $label                  = "antares/customfields::validator." . $prepared['activeValidators'][$validator->validator->id];
+                        $label                  = "antares/customfields::validator." . array_get($prepared, 'activeValidators.' . $validator->validator->id, 'default_custom_validator_label');
                     }
                     $shouldBeChecked = array_key_exists($validator->validator->id, $prepared['activeValidators']);
                     if (!$shouldBeChecked and $validator->validator->name == 'custom') {
@@ -148,7 +146,7 @@ class FieldFormFactory extends FormFactory
                         $customValidator = $fieldset
                                 ->control('input:text', "validator_custom[{$validator->validator->id}]")
                                 ->attributes(['class' => 'w470'])
-                                ->label('Value');
+                                ->label(trans('antares/customfields::label.custom_validator_value'));
                         if (isset($prepared['activeValidators'][$validator->validator->id]) && !empty($prepared['activeValidators'][$validator->validator->id])) {
                             $customValidator->value($prepared['activeValidators'][$validator->validator->id]);
                         } else {

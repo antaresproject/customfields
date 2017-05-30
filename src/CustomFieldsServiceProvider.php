@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,9 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields;
 
@@ -120,7 +118,7 @@ class CustomFieldsServiceProvider extends ModuleServiceProvider
         $path = __DIR__ . '/../resources';
 
         $view = $this->app->make('view');
-        $view->composer('antares/customfields::admin.list', LeftPane::class);
+        $view->composer(['antares/customfields::admin.list', 'antares/customfields::admin.edit'], LeftPane::class);
 
         $this->addConfigComponent('antares/customfields', 'antares/customfields', "{$path}/config");
         $this->addLanguageComponent('antares/customfields', 'antares/customfields', "{$path}/lang");
@@ -128,7 +126,6 @@ class CustomFieldsServiceProvider extends ModuleServiceProvider
         $this->bootMemory();
         $this->bootFormEvents();
         $this->bootMenu();
-        $this->app['antares.customfields.installed'] = true;
     }
 
     /**

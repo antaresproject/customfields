@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,9 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\TestCase;
 
@@ -63,7 +61,7 @@ class FieldDataTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->stub->getMorphClass(), 'FieldData');
+        $this->assertSame($this->stub->getMorphClass(), 'Antares\Customfields\Model\FieldData');
     }
 
     /**
@@ -79,7 +77,7 @@ class FieldDataTest extends TestCase
      */
     public function testHasValidFillableConfiguration()
     {
-        $this->assertSame($this->stub->fillable, ['user_id', 'namespace', 'foreign_id', 'field_id', 'option_id', 'data']);
+        $this->assertSame($this->stub->fillable, ['user_id', 'namespace', 'foreign_id', 'field_id', 'field_class', 'option_id', 'data']);
     }
 
     /**
@@ -99,7 +97,7 @@ class FieldDataTest extends TestCase
     {
         $relation = $this->stub->user();
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasOne', $relation);
-        $this->assertInstanceOf('App\User', $relation->getModel());
+        $this->assertInstanceOf('Antares\Model\User', $relation->getModel());
     }
 
 }

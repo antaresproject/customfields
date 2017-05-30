@@ -1,7 +1,7 @@
 <section class="generals-form">
     {% set formbuilder=app('form') %}
     {% set htmlbuilder=app('html') %}
-    {{ formbuilder.open(form)|raw }}
+    {{ formbuilder.open(form|merge({'class':'form--hor'}))|raw }}
     {% if token %}
         {{ formbuilder.token()|raw }}
     {% endif %}
@@ -10,7 +10,7 @@
     {% endfor %}
     {% for fieldset in fieldsets %}
         <div class="col-group">
-            <div class="col-dt-8">
+            <div class="col-dt-16 col-mb-16">
                 <fieldset {{ htmlbuilder.attributes(fieldset.attributes ?: [])|raw }}>
                     {% if fieldset.name %}
                         <legend>{{ fieldset.name }}</legend>
@@ -18,7 +18,12 @@
                     <div class="col-group">
                         {% for control in fieldset.controls() %}
                             <div class="form-block">
-                                {% include 'antares/foundation::layouts.antares.partials.form.vertical._'~control.type|replace({':': '_'}) with {control: control} %}
+                                {% include 'antares/foundation::layouts.antares.partials.form.horizontal._'~control.type|replace({':': '_'}) with {control: control} %}
+                            </div>
+                            <div class="form-block">
+                                {% if control.inlineHelp|length>1 or control.help|length>1 %}
+                                    {% include 'antares/foundation::layouts.antares.partials.form.horizontal._description' %}             
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>

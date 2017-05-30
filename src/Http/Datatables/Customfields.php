@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,9 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\Http\Datatables;
 
@@ -47,6 +45,16 @@ class Customfields extends DataTable
     ];
 
     /**
+     * Quick search settings
+     *
+     * @var String
+     */
+    protected $search = [
+        'view'     => 'antares/customfields::admin.partials._search',
+        'category' => 'Custom fields'
+    ];
+
+    /**
      * @return Builder
      */
     public function query()
@@ -69,7 +77,6 @@ class Customfields extends DataTable
                 $customfields->forget($index);
             }
         }
-
         return $customfields;
     }
 
@@ -116,6 +123,16 @@ class Customfields extends DataTable
             $section = $html->create('div', $html->create('section', $html->create('ul', $html->raw(implode('', $btns)))), ['class' => 'mass-actions-menu'])->get();
             return '<i class="zmdi zmdi-more"></i>' . app('html')->raw($section)->get();
         };
+    }
+
+    /**
+     * Gets patterned url for search engines
+     * 
+     * @return String
+     */
+    public static function getPatternUrl()
+    {
+        return handles('antares::customfields/{id}/edit');
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,25 +14,21 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\Model;
 
 use Antares\Brands\Model\BrandableTrait;
 use Antares\Logger\Traits\LogRecorder;
-use Antares\Search\Traits\SearchTrait;
 use Antares\Model\Eloquent;
 
 class Field extends Eloquent
 {
 
     use BrandableTrait,
-        LogRecorder,
-        SearchTrait;
+        LogRecorder;
 
 // Disables the log record in this model.
     protected $auditEnabled   = true;
@@ -42,16 +38,6 @@ class Field extends Eloquent
     protected $dontKeepLogOf  = ['created_at', 'updated_at', 'deleted_at'];
 // Tell what actions you want to audit.
     protected $auditableTypes = ['created', 'saved', 'deleted'];
-
-    /**
-     * Quick search settings
-     *
-     * @var String
-     */
-    protected $search = [
-        'view'     => 'antares/customfields::admin.partials._search',
-        'category' => 'Custom fields'
-    ];
 
     /**
      * The primary key for the model.
@@ -86,19 +72,6 @@ class Field extends Eloquent
      */
     public $fillable = [
         'brand_id', 'group_id', 'type_id', 'name', 'label', 'placeholder', 'value', 'description', 'imported', 'force_display', 'additional_attributes'
-    ];
-
-    /**
-     * Searchable rules.
-     *
-     * @var array
-     */
-    protected $searchable = [
-        'columns' => [
-            'tbl_fields.name'        => 10,
-            'tbl_fields.label'       => 8,
-            'tbl_fields.description' => 6,
-        ]
     ];
 
     /**

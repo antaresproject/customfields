@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,9 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\TestCase;
 
@@ -92,8 +90,8 @@ class FormsProviderTest extends \PHPUnit_Framework_TestCase
         $handler = m::mock('\Antares\Customfields\Memory\FormsRepository');
 
         $handler->shouldReceive('initiate')->once()->andReturn([])
-                ->shouldReceive('retrieve')->once()->with('foo/user-1')->andReturn('foobar')
-                ->shouldReceive('retrieve')->once()->with('foobar/user-1')->andReturnNull();
+                ->shouldReceive('retrieve')->once()->with('foo.1')->andReturn('foobar')
+                ->shouldReceive('retrieve')->once()->with('foobar.1')->andReturnNull();
 
         $stub = new FormsProvider($handler);
 
