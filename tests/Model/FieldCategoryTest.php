@@ -86,7 +86,7 @@ class FieldCategoryTest extends TestCase
     public function testGetDefault()
     {
         $stub = $this->stub;
-        $this->assertInstanceOf('Antares\Customfields\Model\FieldCategory', $stub::getDefault());
+        $this->assertNull($stub::getDefault());
     }
 
 }

@@ -57,7 +57,7 @@ class FieldPresenterTest extends ApplicationTestCase
 
         $this->app['antares.customfields.model.view'] = $fieldView;
 
-        $this->app['view']->addNamespace('antares/customfields', realpath(base_path() . '../../../../components/customfields/resources/views'));
+        $this->app['view']->addNamespace('antares/customfields', realpath(getcwd() . '/resources/views'));
         $stub = new FieldPresenter($mock, $breadcrumb, $datatable);
         $this->assertInstanceOf(\Illuminate\View\View::class, $stub->table($builder));
     }

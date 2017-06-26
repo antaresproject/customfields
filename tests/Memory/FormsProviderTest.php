@@ -20,9 +20,9 @@
 
 namespace Antares\Customfields\TestCase;
 
-use Mockery as m;
-use Illuminate\Container\Container;
 use Antares\Customfields\Memory\FormsProvider;
+use Illuminate\Container\Container;
+use Mockery as m;
 
 class FormsProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,15 +40,6 @@ class FormsProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->app = new Container();
-    }
-
-    /**
-     * Teardown the test environment.
-     */
-    public function tearDown()
-    {
-        unset($this->app);
-        m::close();
     }
 
     /**

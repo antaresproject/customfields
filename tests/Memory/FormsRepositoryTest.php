@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Mockery as m;
@@ -29,23 +27,6 @@ use Antares\Testing\TestCase;
 
 class FormsRepositoryTest extends TestCase
 {
-
-    /**
-     * Setup the test environment.
-     */
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Teardown the test environment.
-     */
-    public function tearDown()
-    {
-        unset($this->app);
-        m::close();
-    }
 
     /**
      * Test Antares\Customfields\Memory\FormsRepository::initiate()

@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\TestCase;
 
 use Antares\Testing\TestCase;
@@ -34,19 +32,15 @@ class CustomValidatorTest extends TestCase
      */
     public function setUp()
     {
-        parent::setUp();
-        $this->app['antares.customfields.model.view'] = $fieldView                                    = m::mock(\Antares\Customfields\Model\FieldView::class);
-        $fieldView->shouldReceive('query')->withNoArgs()->andReturnSelf()
-                ->shouldReceive('where')->withAnyArgs()->andReturnSelf()
-                ->shouldReceive('exists')->withNoArgs()->andReturn(false);
-    }
 
-    /**
-     * @see parent::tearDown
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
+        parent::setUp();
+        $builder = m::mock(\Illuminate\Database\Eloquent\Builder::class);
+
+        $builder->shouldReceive('query')->withNoArgs()->andReturnSelf()
+                ->shouldReceive('where')->withAnyArgs()->andReturn($builder)
+                ->shouldReceive('exists')->withAnyArgs()->andReturn(false);
+
+        $this->app['antares.customfields.model.view'] = $builder;
     }
 
     /**
@@ -54,6 +48,7 @@ class CustomValidatorTest extends TestCase
      */
     public function testValidateNameOnCreate()
     {
+
         $translator = m::mock('\Illuminate\Translation\Translator');
         $stub       = new CustomValidator($translator, [], []);
         $this->assertTrue($stub->validateNameOnCreate('testattribute', '1', []));
