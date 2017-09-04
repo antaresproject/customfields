@@ -45,7 +45,7 @@ class FieldFormFactory extends FormFactory
     {
         $form->name('Customfields form');
         /** selectors */
-        $form->fieldset(trans('antares/customfields::label.container'), function (Fieldset $fieldset) use($prepared) {
+        $form->fieldset(trans('antares/customfields::label.container'), function (Fieldset $fieldset) use($form, $prepared) {
 
             $attributes = [];
             if ($prepared['imported']) {
@@ -93,8 +93,8 @@ class FieldFormFactory extends FormFactory
                             })
                             ->wrapper(['class' => 'w500'])
                             ->attributes(['multiple' => 'multiple', 'data-selectar' => false, 'id' => 'fieldset'])
-                            ->value(function($row) {
-                                return $row->fieldsets->pluck('name')->toArray();
+                            ->value(function() use($form) {
+                                return $form->row->fieldsets->pluck('name')->toArray();
                             })->help = trans('* Name of groups where field is assigned to. Start typing to create new fieldset.');
         });
     }

@@ -73,7 +73,7 @@ class FieldPresenter extends Presenter
      * @param Route $route
      * @return type
      */
-    protected function prepareData($model, Route $route)
+    public function prepareData($model, Route $route)
     {
         /**
          * prepare data
