@@ -45,36 +45,43 @@ class FieldFormFactory extends FormFactory
     {
         $form->name('Customfields form');
         /** selectors */
-        $form->fieldset(trans('antares/customfields::label.container'), function (Fieldset $fieldset) use($prepared) {
+        $form->fieldset(trans('antares/customfields::label.container'), function (Fieldset $fieldset) use($form, $prepared) {
 
             $attributes = [];
             if ($prepared['imported']) {
                 array_set($attributes, 'disabled', 'disabled');
             }
+            /** category list * */
             $category = $fieldset->control('select', 'category')
                     ->options($prepared['categoryOptions'])
                     ->attributes(['id' => 'FieldCategorySelector'] + $attributes)
                     ->value($prepared['categoryId'])
-                    ->label(trans('antares/customfields::label.category'));
+                    ->label(trans('antares/customfields::label.category'))
+                    ->wrapper(['class' => 'w370']);
             if ($prepared['imported']) {
                 $category->help = trans('* Change category is disabled for native customfields.');
             }
 
+
+            /** group list * */
             $group = $fieldset
                     ->control('select', 'group')
                     ->options($prepared['groupOptions'])
                     ->attributes(['id' => 'FieldGroupSelector'] + $attributes)
                     ->value($prepared['groupId'])
-                    ->label(trans('antares/customfields::label.group'));
+                    ->label(trans('antares/customfields::label.group'))
+                    ->wrapper(['class' => 'w370']);
             if ($prepared['imported']) {
                 $group->help = trans('* Change group is disabled for native customfields.');
             }
 
+            /** type list * */
             $type = $fieldset->control('select', 'type')
                     ->options($prepared['typeOptions'])
                     ->value($prepared['typeId'])
                     ->attributes(['id' => 'FieldTypeSelector'] + $attributes)
-                    ->label(trans('antares/customfields::label.type'));
+                    ->label(trans('antares/customfields::label.type'))
+                    ->wrapper(['class' => 'w370']);
 
             if ($prepared['imported']) {
                 $type->help = trans('* Change type is disabled for native customfields.');
@@ -84,12 +91,11 @@ class FieldFormFactory extends FormFactory
                             ->options(function() {
                                 return \Antares\Customfields\Model\Fieldsets::pluck('name', 'name');
                             })
-                            ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7'])
+                            ->wrapper(['class' => 'w500'])
                             ->attributes(['multiple' => 'multiple', 'data-selectar' => false, 'id' => 'fieldset'])
-                            ->value(function($row) {
-                                return $row->fieldsets->pluck('name')->toArray();
-                            })
-                    ->help = trans('* Name of groups where field is assigned to. Start typing to create new fieldset.');
+                            ->value(function() use($form) {
+                                return $form->row->fieldsets->pluck('name')->toArray();
+                            })->help = trans('* Name of groups where field is assigned to. Start typing to create new fieldset.');
         });
     }
 
@@ -165,37 +171,33 @@ class FieldFormFactory extends FormFactory
         }
         $form->fieldset(trans('antares/customfields::label.options'), function (Fieldset $fieldset) use($shouldContainValueField) {
 
-            $attributes = [];
+            $attributes = ['class' => 'w470'];
             if ($this->model->imported) {
                 $attributes['disabled'] = 'disabled';
             }
             $nameField = $fieldset->control('input:text', 'name')
                     ->label(trans('antares/customfields::label.name'))
-                    ->attributes($attributes)
-                    ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7']);
+                    ->attributes($attributes);
 
             if ($this->model->imported) {
                 $nameField->help = trans('antares/customfields::messages.customfield_name_edit_disabled_for_native');
             }
 
 
-            $fieldset->control('input:text', 'label')
-                    ->label(trans('antares/customfields::label.default_label'))
-                    ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7']);
+            $fieldset->control('input:text', 'label')->label(trans('antares/customfields::label.default_label'))->attributes(['class' => 'w470']);
 
             $fieldset->control('input:text', 'placeholder')
                     ->label(trans('antares/customfields::label.default_placeholder'))
-                    ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7']);
+                    ->attributes(['class' => 'w470']);
 
             $fieldset->control('textarea', 'description')
                     ->label(trans('antares/customfields::label.description'))
-                    ->attributes(['cols' => '5', 'rows' => '5'])
-                    ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7']);
+                    ->attributes(['class' => 'w570', 'cols' => '5', 'rows' => '5']);
 
             if ($shouldContainValueField) {
                 $fieldset->control('input:text', 'value')
                         ->label(trans('antares/customfields::label.value'))
-                        ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7']);
+                        ->attributes(['class' => 'w470']);
             }
             $control = $fieldset->control('input:checkbox', 'force_display')
                     ->label(trans('antares/customfields::label.force_display_on_form'))
@@ -206,7 +208,7 @@ class FieldFormFactory extends FormFactory
 
             $fieldset->control('input:text', 'additional_attributes')
                     ->label(trans('antares/customfields::label.field_attributes'))
-                    ->wrapper(['class' => 'col-mb-16 col-18 col-dt-12 col-ld-7'])
+                    ->attributes(['class' => 'w500'])
                     ->help(trans('antares/customfields::label.field_attributes_help'));
         });
     }
