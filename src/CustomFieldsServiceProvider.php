@@ -118,7 +118,7 @@ class CustomFieldsServiceProvider extends ModuleServiceProvider
         $path = __DIR__ . '/../resources';
 
         $view = $this->app->make('view');
-        $view->composer(['antares/customfields::admin.list', 'antares/customfields::admin.edit'], LeftPane::class);
+        $view->composer(['antares/customfields::admin.list'], LeftPane::class);
 
         $this->addConfigComponent('antares/customfields', 'antares/customfields', "{$path}/config");
         $this->addLanguageComponent('antares/customfields', 'antares/customfields', "{$path}/lang");

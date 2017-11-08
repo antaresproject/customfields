@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Http\Breadcrumb;
 
 use DaveJamesMiller\Breadcrumbs\Facade as Breadcrumbs;
@@ -50,7 +48,7 @@ class Breadcrumb
         $this->onList();
         Breadcrumbs::register('customfields-create-update', function($breadcrumbs) use($model) {
             $breadcrumbs->parent('customfields');
-            $name = $model->exists ? 'Update custom field ' . $model->name : 'Create custom field';
+            $name = $model->exists ? 'Edit #' . $model->id . ', ' . $model->name : 'Create custom field';
             $breadcrumbs->push($name, '#');
         });
 

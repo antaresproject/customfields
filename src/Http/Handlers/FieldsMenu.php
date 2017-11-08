@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Customfields\Http\Handlers;
 
 use Antares\Customfields\Model\FieldCategory;

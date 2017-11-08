@@ -236,13 +236,15 @@ class FieldFormFactory extends FormFactory
     protected function setButtonsContainer(&$form)
     {
         $form->fieldset('', function (Fieldset $fieldset) {
-            $fieldset->control('button', 'cancel-button')
-                    ->attributes(['type' => 'submit', 'class' => 'btn btn--md btn--default mdl-button mdl-js-button mdl-js-ripple-effect'])
-                    ->value(trans('antares/foundation::label.cancel'));
-
             $fieldset->control('button', 'save-button')
                     ->attributes(['type' => 'submit'])
                     ->value(trans('antares/foundation::label.save'));
+
+
+            $fieldset->control('button', 'cancel')
+                    ->field(function() {
+                        return app('html')->link(handles('antares::customfields/index'), trans('antares/foundation::label.cancel'), ['class' => 'btn btn--md btn--default mdl-button mdl-js-button']);
+                    });
         });
     }
 

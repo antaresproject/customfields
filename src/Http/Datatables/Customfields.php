@@ -105,7 +105,13 @@ class Customfields extends DataTable
                         ->addColumn(['data' => 'type_name', 'name' => 'type_name', 'title' => trans('antares/customfields::datagrid.header.type_name')])
                         ->addColumn(['data' => 'type', 'name' => 'type', 'title' => trans('antares/customfields::datagrid.header.type')])
                         ->addAction(['name' => 'edit', 'title' => '', 'class' => 'mass-actions dt-actions', 'orderable' => false, 'searchable' => false])
-                        ->ajax(handles('antares::customfields/index'));
+                        ->ajax(handles('antares::customfields/index'))
+                        ->parameters([
+                            'aoColumnDefs' => [
+                                ['width' => '5%', 'targets' => 0],
+                            ]
+                        ])
+                        ->zeroDataLink('Create custom field', handles('antares::customfields/create'));
     }
 
     /**
