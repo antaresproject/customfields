@@ -56,8 +56,8 @@ class FieldFormFactory extends FormFactory
                     ->options($prepared['categoryOptions'])
                     ->attributes(['id' => 'FieldCategorySelector'] + $attributes)
                     ->value($prepared['categoryId'])
-                    ->label(trans('antares/customfields::label.category'))
-                    ->wrapper(['class' => 'w370']);
+                    ->label(trans('antares/customfields::label.category'));
+
             if ($prepared['imported']) {
                 $category->help = trans('* Change category is disabled for native customfields.');
             }
@@ -69,8 +69,7 @@ class FieldFormFactory extends FormFactory
                     ->options($prepared['groupOptions'])
                     ->attributes(['id' => 'FieldGroupSelector'] + $attributes)
                     ->value($prepared['groupId'])
-                    ->label(trans('antares/customfields::label.group'))
-                    ->wrapper(['class' => 'w370']);
+                    ->label(trans('antares/customfields::label.group'));
             if ($prepared['imported']) {
                 $group->help = trans('* Change group is disabled for native customfields.');
             }
@@ -80,8 +79,7 @@ class FieldFormFactory extends FormFactory
                     ->options($prepared['typeOptions'])
                     ->value($prepared['typeId'])
                     ->attributes(['id' => 'FieldTypeSelector'] + $attributes)
-                    ->label(trans('antares/customfields::label.type'))
-                    ->wrapper(['class' => 'w370']);
+                    ->label(trans('antares/customfields::label.type'));
 
             if ($prepared['imported']) {
                 $type->help = trans('* Change type is disabled for native customfields.');
@@ -91,7 +89,6 @@ class FieldFormFactory extends FormFactory
                             ->options(function() {
                                 return \Antares\Customfields\Model\Fieldsets::pluck('name', 'name');
                             })
-                            ->wrapper(['class' => 'w500'])
                             ->attributes(['multiple' => 'multiple', 'data-selectar' => false, 'id' => 'fieldset'])
                             ->value(function() use($form) {
                                 return $form->row->fieldsets->pluck('name')->toArray();
