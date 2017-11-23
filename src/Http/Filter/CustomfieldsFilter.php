@@ -11,14 +11,12 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Customfields
- * @version    0.9.0
+ * @version    0.9.2
  * @author     Antares Team
  * @license    BSD License (3-clause)
  * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Customfields\Filter;
 
@@ -49,7 +47,7 @@ class CustomfieldsFilter extends SelectFilter implements DataTableScopeContract
      *
      * @var String
      */
-    protected $pattern = 'Group: %value';
+    protected $pattern = '<span class="filter-label">Group:</span> %value';
 
     /**
      * filter instance dataprovider
@@ -67,17 +65,17 @@ class CustomfieldsFilter extends SelectFilter implements DataTableScopeContract
     }
 
     /**
-     * filters data by parameters from memory
+     * Filters data by parameters from memory
      * 
      * @param mixed $builder
      */
-    public function apply($builder)
+    public function apply($collection)
     {
         $values = $this->getValues();
-        if (empty($values)) {
+        if (!count($values)) {
             return $builder;
         }
-        $builder->whereIn('type_id', $values);
+        return $collection = $collection->whereIn('type_id', (array) $values);
     }
 
 }

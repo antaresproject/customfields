@@ -63,10 +63,8 @@ class Customfields extends DataTable
         if (!is_null($category = from_route('category'))) {
             array_set($where, 'category_name', $category);
         }
-        $builder = Foundation::make('antares.customfields.model.view')->where($where);
-
+        $builder      = Foundation::make('antares.customfields.model.view')->where($where);
         $customfields = $builder->get();
-
         $configurable = app('customfields')->getConfigurable($category);
         foreach ($customfields as $index => $customfield) {
             if (!$customfield->imported) {
@@ -77,6 +75,7 @@ class Customfields extends DataTable
                 $customfields->forget($index);
             }
         }
+
         return $customfields;
     }
 
@@ -109,6 +108,7 @@ class Customfields extends DataTable
                         ->parameters([
                             'aoColumnDefs' => [
                                 ['width' => '5%', 'targets' => 0],
+                                ['width' => '3%', 'targets' => 5],
                             ]
                         ])
                         ->zeroDataLink('Create custom field', handles('antares::customfields/create'));
