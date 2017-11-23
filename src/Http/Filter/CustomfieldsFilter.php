@@ -73,7 +73,7 @@ class CustomfieldsFilter extends SelectFilter implements DataTableScopeContract
     {
         $values = $this->getValues();
         if (!count($values)) {
-            return $builder;
+            return $collection;
         }
         return $collection = $collection->whereIn('type_id', (array) $values);
     }
