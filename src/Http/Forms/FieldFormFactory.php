@@ -142,7 +142,6 @@ class FieldFormFactory extends FormFactory
                     if ($validator->validator->customizable) {
                         $customValidator = $fieldset
                                 ->control('input:text', "validator_custom[{$validator->validator->id}]")
-                                ->attributes(['class' => 'w470'])
                                 ->label(trans('antares/customfields::label.custom_validator_value'));
                         if (isset($prepared['activeValidators'][$validator->validator->id]) && !empty($prepared['activeValidators'][$validator->validator->id])) {
                             $customValidator->value($prepared['activeValidators'][$validator->validator->id]);
@@ -168,7 +167,7 @@ class FieldFormFactory extends FormFactory
         }
         $form->fieldset(trans('antares/customfields::label.options'), function (Fieldset $fieldset) use($shouldContainValueField) {
 
-            $attributes = ['class' => 'w470'];
+            $attributes = [];
             if ($this->model->imported) {
                 $attributes['disabled'] = 'disabled';
             }
@@ -181,20 +180,18 @@ class FieldFormFactory extends FormFactory
             }
 
 
-            $fieldset->control('input:text', 'label')->label(trans('antares/customfields::label.default_label'))->attributes(['class' => 'w470']);
+            $fieldset->control('input:text', 'label')->label(trans('antares/customfields::label.default_label'));
 
             $fieldset->control('input:text', 'placeholder')
-                    ->label(trans('antares/customfields::label.default_placeholder'))
-                    ->attributes(['class' => 'w470']);
+                    ->label(trans('antares/customfields::label.default_placeholder'));
 
             $fieldset->control('textarea', 'description')
                     ->label(trans('antares/customfields::label.description'))
-                    ->attributes(['class' => 'w570', 'cols' => '5', 'rows' => '5']);
+                    ->attributes(['cols' => '5', 'rows' => '5']);
 
             if ($shouldContainValueField) {
                 $fieldset->control('input:text', 'value')
-                        ->label(trans('antares/customfields::label.value'))
-                        ->attributes(['class' => 'w470']);
+                        ->label(trans('antares/customfields::label.value'));
             }
             $control = $fieldset->control('input:checkbox', 'force_display')
                     ->label(trans('antares/customfields::label.force_display_on_form'))
@@ -205,7 +202,6 @@ class FieldFormFactory extends FormFactory
 
             $fieldset->control('input:text', 'additional_attributes')
                     ->label(trans('antares/customfields::label.field_attributes'))
-                    ->attributes(['class' => 'w500'])
                     ->help(trans('antares/customfields::label.field_attributes_help'));
         });
     }
@@ -262,11 +258,9 @@ class FieldFormFactory extends FormFactory
                 if ($options->isEmpty()) {
 
                     $fieldset->control('input:text', 'option_label[]')
-                            ->attributes(['class' => 'w470'])
                             ->label(trans('antares/customfields::label.multi_option_label'));
 
                     $fieldset->control('input:text', 'option[]')
-                            ->attributes(['class' => 'w470'])
                             ->label(trans('antares/customfields::label.multi_option_value'));
                 }
             });
@@ -275,12 +269,10 @@ class FieldFormFactory extends FormFactory
                     $fieldset->attributes(['class' => 'group-options']);
 
                     $fieldset->control('input:text', "option_label[{$option->id}]")
-                            ->attributes(['class' => 'w470'])
                             ->value($option->label)
                             ->label(trans('antares/customfields::label.multi_option_label'));
 
                     $fieldset->control('input:text', "option[{$option->id}]")
-                            ->attributes(['class' => 'w470'])
                             ->value($option->value)
                             ->label(trans('antares/customfields::label.multi_option_value'));
                     $fieldset->control('input:text', '')
@@ -292,12 +284,13 @@ class FieldFormFactory extends FormFactory
 
             $form->fieldset(trans('antares/customfields::label.data_options'), function (Fieldset $fieldset) {
                 $fieldset->attributes(['class' => 'group-options hide', 'id' => 'optionTemplate']);
+
                 $fieldset->control('input:text', 'option_label[]')
-                        ->label(trans('antares/customfields::label.multi_option_label'))
-                        ->attributes(['class' => 'w470']);
+                        ->label(trans('antares/customfields::label.multi_option_label'));
+
                 $fieldset->control('input:text', 'option[]')
-                        ->label(trans('antares/customfields::label.multi_option_value'))
-                        ->attributes(['class' => 'w470']);
+                        ->label(trans('antares/customfields::label.multi_option_value'));
+
                 $fieldset->control('input:text', '')
                         ->field(function () {
                             return '<button type="button" class="btn btn--s-small btn--primary mdl-button mdl-js-button mdl-js-ripple-effect removeButton">Remove</button>';
