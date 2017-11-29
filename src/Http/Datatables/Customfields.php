@@ -22,8 +22,10 @@ namespace Antares\Customfields\Http\Datatables;
 
 use Antares\Customfields\Filter\CustomfieldsFilter;
 use Antares\Datatables\Services\DataTable;
+use Antares\Customfields\Model\FieldType;
 use Illuminate\Database\Eloquent\Builder;
 use Antares\Support\Facades\Foundation;
+use Antares\Support\Str;
 
 class Customfields extends DataTable
 {
@@ -36,15 +38,6 @@ class Customfields extends DataTable
     public $perPage = 25;
 
     /**
-     * customfields filters
-     *
-     * @var array 
-     */
-    protected $filters = [
-        CustomfieldsFilter::class
-    ];
-
-    /**
      * Quick search settings
      *
      * @var String
@@ -52,6 +45,15 @@ class Customfields extends DataTable
     protected $search = [
         'view'     => 'antares/customfields::admin.partials._search',
         'category' => 'Custom fields'
+    ];
+
+    /**
+     * customfields filters
+     *
+     * @var array 
+     */
+    protected $filters = [
+        CustomfieldsFilter::class
     ];
 
     /**
@@ -63,20 +65,8 @@ class Customfields extends DataTable
         if (!is_null($category = from_route('category'))) {
             array_set($where, 'category_name', $category);
         }
-        $builder      = Foundation::make('antares.customfields.model.view')->where($where);
-        $customfields = $builder->get();
-        $configurable = app('customfields')->getConfigurable($category);
-        foreach ($customfields as $index => $customfield) {
-            if (!$customfield->imported) {
-                continue;
-            }
-            $in = (is_null($category) && isset($configurable[$customfield->category_name])) ? $configurable[$customfield->category_name] : $configurable;
-            if (!in_array($customfield->name, $in)) {
-                $customfields->forget($index);
-            }
-        }
-
-        return $customfields;
+        $builder = Foundation::make('antares.customfields.model.view')->where($where);
+        return $builder;
     }
 
     /**
