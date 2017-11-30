@@ -22,10 +22,8 @@ namespace Antares\Customfields\Http\Datatables;
 
 use Antares\Customfields\Filter\CustomfieldsFilter;
 use Antares\Datatables\Services\DataTable;
-use Antares\Customfields\Model\FieldType;
 use Illuminate\Database\Eloquent\Builder;
 use Antares\Support\Facades\Foundation;
-use Antares\Support\Str;
 
 class Customfields extends DataTable
 {
@@ -80,6 +78,33 @@ class Customfields extends DataTable
                             return is_null($row->type) ? '---' : $row->type;
                         })
                         ->make(true);
+    }
+
+    /**
+     * prepare datatable instance before
+     *
+     * @param EloquentBuilder|Collection $query
+     * @return \Antares\Datatables\Engines\BaseEngine
+     */
+    public function prepare($query = null)
+    {
+
+        $of = is_null($query) ? $this->getQuery() : $query;
+        if (request()->header('search_protection') && request()->has('search')) {
+            $keyword = input('search');
+            $of->where('name', 'like', "%$keyword%")
+                    ->orWhere('group_name', 'like', "%$keyword%")
+                    ->orWhere('type_name', 'like', "%$keyword%")
+                    ->orWhere('type', 'like', "%$keyword%")
+                    ->orWhere('id', 'like', "%$keyword%");
+        }
+        $datatables = $this->datatables->of($of, get_class($this));
+        $path       = uri();
+        event("datatables.value.{$path}", [$datatables]);
+        event(new \Antares\Events\Datatables\Value($path, $datatables));
+
+
+        return $datatables;
     }
 
     /**
