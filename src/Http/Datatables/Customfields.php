@@ -156,4 +156,14 @@ class Customfields extends DataTable
         return handles('antares::customfields/{id}/edit');
     }
 
+    /**
+     * Checks whether user has access to view datatable
+     * 
+     * @return boolean
+     */
+    public function authorize()
+    {
+        return app('antares.acl')->make('antares/customfields')->can('list-customfields');
+    }
+
 }
